@@ -1,0 +1,262 @@
+PERPLEXITY LABS - 4 ESSENTIAL PROMPTS FOR SFS-5 STRATEGY
+Created: November 26, 2025
+==========================================================
+
+
+==================================================
+PROMPT 1: BUILD REAL-TIME SCALPING DASHBOARD
+==================================================
+Deliverable: Interactive web dashboard (HTML/CSS/JavaScript)
+Time Required: 10-15 minutes
+
+COPY THIS PROMPT:
+--------------------------------------------------
+
+Create an interactive web-based dashboard for NIFTY options scalping that displays the following components:
+
+1. Real-time 5-minute candlestick chart with VWAP overlay (green line)
+2. Volume bars below chart with 2x average volume threshold highlighted in yellow
+3. RSI indicator (14-period) with 50-level marked, show crossover alerts
+4. India VIX current level display with color coding: Red if >20, Yellow if 10-12, Green if 12-18, Gray if <10
+5. ATM NIFTY Call and Put premiums updating in real-time via FYERS API V3
+6. Option chain showing top 5 ATM strikes with Open Interest changes (highlight strikes with OI buildup in green/red)
+7. Large entry signal indicator: "BUY CALL" (green button), "BUY PUT" (red button), "NO TRADE" (gray) based on 5-factor alignment
+8. Active trade tracker section showing: Entry time, Strike, Entry premium, Current premium, P&L percentage, Time elapsed in minutes
+9. Daily performance summary: Number of trades taken, Wins, Losses, Win rate percentage, Total P&L for the day
+
+Technical requirements:
+- Use FYERS API V3 (pip install fyers-apiv3) for real-time data
+- Current NIFTY lot size is 75 (will change to 65 on December 30, 2025)
+- Weekly expiry is TUESDAY (not Thursday)
+- Make dashboard clean, responsive, easy to read with large fonts
+- Use green/red color scheme for clarity
+- Add audio alerts (beep sound) when all 5 factors align for trade entry
+- Include timestamp showing last data update
+- Make it work on desktop and tablet
+
+Please provide complete HTML, CSS, and JavaScript code that I can run locally in my browser.
+
+
+==================================================
+PROMPT 2: CREATE BACKTESTING ENGINE
+==================================================
+Deliverable: Python backtesting code with performance report
+Time Required: 10-15 minutes
+
+COPY THIS PROMPT:
+--------------------------------------------------
+
+Write complete Python code to backtest my naked options scalping strategy (Smart Flow Scalper SFS-5) on NIFTY 5-minute historical data.
+
+Strategy Details:
+
+ENTRY RULES (CALL BUYING):
+- Price must be above VWAP on 5-minute chart
+- Volume must be greater than 2x the 20-period average
+- RSI (14-period) must cross above 50 from below
+- India VIX must be between 12 and 18
+- Call Open Interest building at ATM strike (optional confirmation)
+
+ENTRY RULES (PUT BUYING):
+- Price must be below VWAP on 5-minute chart
+- Volume must be greater than 2x the 20-period average
+- RSI (14-period) must cross below 50 from above
+- India VIX must be between 12 and 18
+- Put Open Interest building at ATM strike (optional confirmation)
+
+EXIT RULES:
+- Stop loss: 30% premium loss (if enter at Rs100, exit at Rs70)
+- Target 1: 40% premium gain - exit 50% of position
+- Target 2: 70% premium gain - exit remaining 50%
+- Time stop: Maximum 60 minutes hold time, if no movement exit at 20 minutes
+- Daily limit: Maximum 5 trades per day
+- Stop trading after 2 consecutive losses in a day
+
+TRADING RULES:
+- Only trade Wednesday, Thursday, Friday (avoid Monday-Tuesday expiry week)
+- Trading hours: 9:30-10:30 AM and 2:00-3:00 PM only
+- Strike selection: ATM NIFTY options with Delta 0.50-0.65
+- Position sizing: Risk 2% per trade
+- Current lot size: 75 (use this for calculations)
+
+Data Requirements:
+- Use FYERS API V3 to fetch NIFTY 5-minute historical data from January 1, 2025 to November 26, 2025
+- Include OHLC, Volume, and if possible VIX data
+- Calculate VWAP, RSI, volume average yourself
+
+Output Requirements:
+- Calculate: Win rate, Average win %, Average loss %, Profit factor, Sharpe ratio, Maximum drawdown, Monthly returns breakdown
+- Generate CSV file with all trade details: Entry date/time, Exit date/time, Direction (CALL/PUT), Entry premium, Exit premium, P&L, Hold time, Exit reason
+- Create summary statistics CSV with monthly performance
+- Print detailed performance report with recommendations
+
+Please provide complete, production-ready Python code with proper error handling, comments, and instructions to run.
+
+
+==================================================
+PROMPT 3: GENERATE TRADE JOURNAL TEMPLATE
+==================================================
+Deliverable: Excel/CSV trade journal with auto-calculations
+Time Required: 8-10 minutes
+
+COPY THIS PROMPT:
+--------------------------------------------------
+
+Create a comprehensive Excel/Google Sheets template for tracking naked options scalping trades with the following structure:
+
+SHEET 1: TRADE LOG
+Columns needed:
+- Date (DD-MM-YYYY format)
+- Day of Week (Mon/Tue/Wed/Thu/Fri)
+- Time (Entry time in HH:MM AM/PM)
+- Index (NIFTY/BANKNIFTY/FINNIFTY dropdown)
+- Direction (CALL/PUT dropdown)
+- Strike Price (numerical)
+- Entry Premium (Rs)
+- Exit Premium (Rs)
+- Lot Size (75 for NIFTY current)
+- Quantity (Lot Size x Number of Lots)
+- Number of Lots (1, 2, 3)
+- Investment (Entry Premium x Quantity)
+- Realized P&L in Rupees (Exit - Entry) x Quantity
+- P&L Percentage ((Exit - Entry) / Entry x 100)
+- Hold Time in Minutes (calculated from entry to exit time)
+- Entry Reason (Text: which 5 factors aligned - VWAP, Volume, RSI, OI, VIX)
+- Exit Reason (Dropdown: Target Hit / Stop Loss / Time Stop / Manual)
+- Notes/Lessons Learned (text field)
+
+AUTO-CALCULATED SUMMARY SECTION (at top of sheet):
+- Total Trades Today
+- Winning Trades Count
+- Losing Trades Count
+- Win Rate Percentage
+- Total P&L Today (Rs)
+- Best Trade (Rs)
+- Worst Trade (Rs)
+- Average Winner (%)
+- Average Loser (%)
+- Risk-Reward Ratio (Avg Win / Avg Loss)
+- Capital Used Today
+- Daily Return Percentage
+
+SHEET 2: DAILY SUMMARY
+- Date, Total Trades, Wins, Losses, Win Rate %, Daily P&L (Rs), Daily Return %, Cumulative P&L (Rs), Running Win Rate %, Notes
+
+SHEET 3: WEEKLY SUMMARY
+- Week Starting Date, Total Trades, Win Rate %, Weekly P&L (Rs), Weekly Return %, Best Day, Worst Day, Drawdown (if any)
+
+SHEET 4: PERFORMANCE ANALYTICS
+Include charts:
+- Equity Curve (Cumulative P&L over time)
+- Win/Loss Distribution (histogram)
+- P&L by Time of Day (9:30-10:30 AM vs 2:00-3:00 PM)
+- P&L by Day of Week (Wed/Thu/Fri comparison)
+- Trade Duration vs P&L (scatter plot)
+- Monthly Returns Bar Chart
+
+SHEET 5: CHECKLIST & RULES
+Include printed reference of: 5-Factor entry checklist, Stop loss rules, Profit target rules, Daily/weekly limits, Position sizing formula, Best practices
+
+Please provide the Excel file with all formulas, conditional formatting (green for wins, red for losses), data validation dropdowns, and charts pre-configured. Make it professional and easy to use.
+
+
+==================================================
+PROMPT 4: SET UP AUTOMATED ALERT SYSTEM
+==================================================
+Deliverable: Python alert script with Telegram integration
+Time Required: 8-12 minutes
+
+COPY THIS PROMPT:
+--------------------------------------------------
+
+Write a Python script that monitors NIFTY index in real-time and sends Telegram alerts when entry conditions for the Smart Flow Scalper (SFS-5) strategy are met.
+
+MONITORING REQUIREMENTS:
+
+Check every 5-minute candle close for these conditions:
+
+FOR CALL ENTRY ALERT:
+1. Price crosses above VWAP (current candle close > VWAP)
+2. Volume of current candle is > 2x the 20-period average volume
+3. RSI (14-period) crosses above 50 from below (previous RSI <50, current RSI >50)
+4. India VIX is between 12 and 18 (check once at market open)
+5. Optional: Call OI increasing at ATM strike
+
+FOR PUT ENTRY ALERT:
+1. Price crosses below VWAP (current candle close < VWAP)
+2. Volume of current candle is > 2x the 20-period average volume
+3. RSI (14-period) crosses below 50 from above (previous RSI >50, current RSI <50)
+4. India VIX is between 12 and 18 (check once at market open)
+5. Optional: Put OI increasing at ATM strike
+
+ALERT MESSAGE FORMAT:
+
+For CALL:
+"🟢 CALL SETUP DETECTED - NIFTY
+Time: 9:45 AM
+NIFTY: 24,150 (VWAP: 24,120)
+Volume: 2.3x average
+RSI: Crossed 50 (now 52)
+VIX: 14.5 ✓
+
+Suggested Trade:
+Buy: 24,150 CE
+Entry: Rs110
+Stop Loss: Rs77 (30% loss)
+Target 1: Rs154 (40% gain) - Exit 50%
+Target 2: Rs187 (70% gain) - Exit 50%
+Risk: Rs2,250 per lot (NIFTY lot=75)
+
+Call OI: Increasing ✓"
+
+TECHNICAL REQUIREMENTS:
+- Use FYERS API V3 (fyers-apiv3 package version 3.3.6)
+- Real-time 5-minute candle data via WebSocket
+- Calculate VWAP, RSI, Volume average in real-time
+- Telegram Bot API for sending alerts (provide setup instructions)
+- Run script from 9:15 AM to 3:15 PM IST on trading days
+- Log all alerts to CSV file for record-keeping
+- Handle API disconnections gracefully with auto-reconnect
+- Include VIX check at 9:15 AM, skip trading if VIX not in 12-18 range
+
+Additional Features:
+- Send morning summary at 9:00 AM with: Today's VIX level, Market sentiment, Trading allowed (Yes/No)
+- Send end-of-day summary at 3:20 PM with: Number of alerts sent
+- Include option to disable alerts on Monday-Tuesday (expiry week)
+- Add command to check current NIFTY price, VWAP, RSI, Volume status on-demand
+
+Please provide:
+1. Complete Python code with comments
+2. Requirements.txt file with all dependencies
+3. Step-by-step setup instructions for Telegram bot
+4. Instructions to run as background service
+5. Sample config file for API keys
+
+Make the code beginner-friendly with clear instructions for non-programmers.
+
+
+==================================================
+HOW TO USE THESE PROMPTS
+==================================================
+
+Option A: In Current Perplexity Thread
+- Just ask: "Create the dashboard" or "Run Prompt 1"
+- Faster execution with full context
+
+Option B: New Perplexity Thread
+- Copy prompt text
+- Start new conversation
+- Paste and submit
+- Labs creates deliverable
+
+==================================================
+NEXT STEPS
+==================================================
+
+1. Choose which prompt to execute first
+2. Dashboard (real-time signals) - Most urgent
+3. Backtest (validate strategy) - Second priority
+4. Trade Journal (track trades) - For Week 2
+5. Alert System (automation) - For Month 2
+
+Ready to build!
